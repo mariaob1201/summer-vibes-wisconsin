@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Summer Vibes Wisconsin</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-content">
+      <span class="hero-badge">Summer 2026</span>
+      <h1>Summer Vibes<br /><span class="accent">Wisconsin</span></h1>
+      <p>Lakes, trails, boats & memories — your ultimate Wisconsin summer trip guide</p>
+      <div class="hero-tags">
+        <span>&#9875; Boating</span>
+        <span>&#128106; Family</span>
+        <span>&#127965; Hiking</span>
+        <span>&#127907; Fishing</span>
+      </div>
+    </div>
+    <div class="hero-wave">
+      <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#f0f9ff" d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z"/>
+      </svg>
+    </div>
+  </header>
+
+  <!-- FILTERS -->
+  <section class="filters-section">
+    <div class="container">
+      <h2>Find Your Perfect Trip</h2>
+      <p class="subtitle">Filter destinations by activity</p>
+      <div class="filters" id="filters">
+        <button class="filter-btn active" data-filter="all">All Destinations</button>
+        <button class="filter-btn" data-filter="boat">&#9875; Boat / Lancha</button>
+        <button class="filter-btn" data-filter="family">&#128106; Family</button>
+        <button class="filter-btn" data-filter="hiking">&#127965; Hiking</button>
+        <button class="filter-btn" data-filter="fishing">&#127907; Fishing</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESTINATION CARDS -->
+  <section class="destinations-section">
+    <div class="container">
+      <div class="cards-grid" id="cardsGrid"></div>
+    </div>
+  </section>
+
+  <!-- TRIP TIPS -->
+  <section class="tips-section">
+    <div class="container">
+      <h2>Trip Planning Tips</h2>
+      <p class="subtitle">Make the most of your Wisconsin summer</p>
+      <div class="tips-grid">
+        <div class="tip-card">
+          <div class="tip-icon">&#128337;</div>
+          <h3>Best Time to Visit</h3>
+          <p>Late June through August is peak season. July offers warmest lake temps (70°F+). Book accommodations 4–6 weeks ahead.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">&#9875;</div>
+          <h3>Renting a Boat (Lancha)</h3>
+          <p>Most marinas rent pontoons, kayaks, and motorboats by the hour or day. Bring a valid ID and expect to pay $80–$200/day for pontoons.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">&#128106;</div>
+          <h3>Going with Family</h3>
+          <p>Pack sunscreen, life jackets for kids, and snacks. Many state parks have picnic areas with grills. Check if the beach has lifeguards.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">&#127965;</div>
+          <h3>Hiking Essentials</h3>
+          <p>Wear layers — mornings near lakes can be cool. Bring bug spray (mosquitoes are real in WI). Download offline trail maps via AllTrails.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">&#127907;</div>
+          <h3>Fishing License</h3>
+          <p>Wisconsin requires a fishing license for ages 16+. Buy online at wildlifelicense.com/wi — a 1-day license is about $10 for non-residents.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">&#127775;</div>
+          <h3>Hidden Gem Tip</h3>
+          <p>Avoid the busiest spots on holiday weekends. Visit Tuesday–Thursday for quieter beaches, easier boat rentals, and better parking.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <p>Summer Vibes Wisconsin &mdash; Trip Guide 2026</p>
+      <p class="footer-sub">Always check state park websites for current hours and reservation requirements before you go.</p>
+    </div>
+  </footer>
+
+  <!-- RATING & COMMENTS MODAL -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+
+      <h2 class="modal-dest-name" id="modalTitle"></h2>
+
+      <!-- Community Rating -->
+      <div class="modal-section">
+        <h3 class="modal-section-title">Community Rating</h3>
+        <div class="community-rating">
+          <span class="community-stars" id="communityStars"></span>
+          <span class="community-avg" id="communityAvg"></span>
+          <span class="community-count" id="communityCount"></span>
+        </div>
+
+        <h3 class="modal-section-title" style="margin-top:20px">Rate This Place</h3>
+        <div class="star-picker" id="starPicker" role="group" aria-label="Rate this destination">
+          <span class="star-pick" data-v="1">&#9733;</span>
+          <span class="star-pick" data-v="2">&#9733;</span>
+          <span class="star-pick" data-v="3">&#9733;</span>
+          <span class="star-pick" data-v="4">&#9733;</span>
+          <span class="star-pick" data-v="5">&#9733;</span>
+        </div>
+        <p class="rating-feedback" id="ratingFeedback"></p>
+      </div>
+
+      <!-- Comments -->
+      <div class="modal-section">
+        <h3 class="modal-section-title">Leave a Comment</h3>
+        <form class="comment-form" id="commentForm">
+          <input class="comment-input" id="commentName" type="text" placeholder="Your name (optional)" maxlength="40" />
+          <textarea class="comment-textarea" id="commentBody" placeholder="Share your experience at this place..." rows="3" maxlength="500" required></textarea>
+          <button class="comment-submit" type="submit">Post Comment</button>
+        </form>
+      </div>
+
+      <!-- Comments list -->
+      <div class="modal-section">
+        <h3 class="modal-section-title">What Travelers Say</h3>
+        <div class="comments-list" id="commentsList">
+          <p class="comments-loading">Loading comments...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="data.js"></script>
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
