@@ -88,6 +88,7 @@ function openModal(destId) {
   overlay.classList.add("open");
   document.body.style.overflow = "hidden";
 
+  renderRecommendations(destId);
   loadRatingSummary(destId);
   loadComments(destId);
 }
@@ -247,6 +248,69 @@ function escapeHTML(str) {
     .replace(/"/g, "&quot;");
 }
 
+// ── Recommendations ────────────────────────────────────────────────────────
+
+let ratingsCache = {};
+
+async function preloadRatings() {
+  try { ratingsCache = await getAllRatingSummaries(); } catch { /* fail silently */ }
+}
+
+function renderRecommendations(destId) {
+  const section = document.getElementById("recoSection");
+  const list    = document.getElementById("recoList");
+  const recos   = getRecommendations(destId, ratingsCache);
+
+  if (!recos.length) { section.style.display = "none"; return; }
+
+  section.style.display = "";
+  list.innerHTML = recos.map(({ dest, matchPct, sharedTags, summary }) => {
+    const tagsHTML = sharedTags
+      .map(t => `<span class="tag tag-${t} tag-sm">${tagLabels[t]}</span>`)
+      .join("");
+
+    const ratingText = summary.count > 0
+      ? `&#9733; ${summary.avg} (${summary.count})`
+      : "No ratings yet";
+
+    return `
+      <div class="reco-card">
+        <div class="reco-img" style="background-image:url('${dest.image}')"></div>
+        <div class="reco-body">
+          <div class="reco-header">
+            <span class="reco-name">${dest.name}</span>
+            <span class="reco-match">${matchPct}% match</span>
+          </div>
+          <div class="reco-match-bar">
+            <div class="reco-match-fill" style="width:${matchPct}%"></div>
+          </div>
+          <div class="reco-meta">
+            <span class="reco-rating">${ratingText}</span>
+          </div>
+          <div class="reco-tags">${tagsHTML}</div>
+          <button class="reco-open-btn" data-id="${dest.id}">Explore &#8599;</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+document.getElementById("recoList").addEventListener("click", (e) => {
+  const btn = e.target.closest(".reco-open-btn");
+  if (btn) openModal(parseInt(btn.dataset.id));
+});
+
+// ── Utils ──────────────────────────────────────────────────────────────────
+
+function escapeHTML(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 // ── Init ───────────────────────────────────────────────────────────────────
 
+preloadRatings();
 renderCards("all");

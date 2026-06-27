@@ -596,6 +596,105 @@ a { color: var(--blue); text-decoration: none; }
   opacity: .6;
 }
 
+/* ── Recommendation cards ── */
+.reco-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.reco-card {
+  display: flex;
+  gap: 12px;
+  background: #f8fafc;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.reco-img {
+  width: 90px;
+  min-height: 90px;
+  flex-shrink: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.reco-body {
+  flex: 1;
+  padding: 10px 12px 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.reco-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.reco-name {
+  font-weight: 700;
+  font-size: .9rem;
+  color: var(--blue-dark);
+}
+
+.reco-match {
+  font-size: .72rem;
+  font-weight: 700;
+  background: #dbeafe;
+  color: #1d4ed8;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.reco-match-bar {
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.reco-match-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue) 0%, var(--teal) 100%);
+  border-radius: 999px;
+  transition: width .4s ease;
+}
+
+.reco-meta {
+  font-size: .78rem;
+  color: #f59e0b;
+}
+
+.reco-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.tag-sm {
+  font-size: .65rem;
+  padding: 2px 7px;
+}
+
+.reco-open-btn {
+  margin-top: 4px;
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: var(--blue);
+  font-size: .8rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+}
+
+.reco-open-btn:hover { text-decoration: underline; }
+
 /* ── Responsive ── */
 @media (max-width: 600px) {
   .cards-grid { grid-template-columns: 1fr; }

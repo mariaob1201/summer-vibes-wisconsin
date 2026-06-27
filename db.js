@@ -32,6 +32,24 @@ async function getComments(destinationId) {
   return data;
 }
 
+async function getAllRatingSummaries() {
+  const { data, error } = await db.from("ratings").select("destination_id, stars");
+  if (error || !data) return {};
+
+  const grouped = {};
+  for (const row of data) {
+    if (!grouped[row.destination_id]) grouped[row.destination_id] = [];
+    grouped[row.destination_id].push(row.stars);
+  }
+
+  const result = {};
+  for (const [id, stars] of Object.entries(grouped)) {
+    const avg = stars.reduce((s, v) => s + v, 0) / stars.length;
+    result[Number(id)] = { avg: Math.round(avg * 10) / 10, count: stars.length };
+  }
+  return result;
+}
+
 async function submitComment(destinationId, nickname, body) {
   const { error } = await db
     .from("comments")
