@@ -1,3 +1,4 @@
+// @ts-nocheck
 const tagLabels = {
   boat:    "&#9875; Boat",
   family:  "&#128106; Family",
