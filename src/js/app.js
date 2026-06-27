@@ -80,6 +80,7 @@ function renderCards(filter) {
 document.getElementById("filters").addEventListener("click", (e) => {
   const btn = e.target.closest(".filter-btn");
   if (!btn) return;
+  clearSearch(false);
   document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
   renderCards(btn.dataset.filter);
@@ -89,6 +90,44 @@ document.getElementById("sortSelect").addEventListener("change", () => {
   const active = document.querySelector(".filter-btn.active");
   renderCards(active ? active.dataset.filter : "all");
 });
+
+// ── Natural Language Search ─────────────────────────────────────────────────
+
+document.getElementById("searchBtn").addEventListener("click", runSearch);
+document.getElementById("nlSearch").addEventListener("keydown", e => {
+  if (e.key === "Enter") runSearch();
+});
+document.getElementById("searchClear").addEventListener("click", () => clearSearch(true));
+
+function runSearch() {
+  const query = document.getElementById("nlSearch").value.trim();
+  if (!query) return;
+
+  const results    = searchDestinations(query);
+  const grid       = document.getElementById("cardsGrid");
+  const status     = document.getElementById("searchStatus");
+  const statusText = document.getElementById("searchStatusText");
+
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  status.classList.add("visible");
+
+  if (!results.length) {
+    statusText.textContent = `No matches for "${query}" — try words like "salsa", "kayak", "kids", or "friends trip"`;
+    grid.innerHTML = `<p class="no-results">No destinations matched. Try different words.</p>`;
+    return;
+  }
+
+  statusText.textContent = `${results.length} match${results.length !== 1 ? "es" : ""} for "${query}"`;
+  grid.innerHTML = sortDestinations(results).map(createCard).join("");
+}
+
+function clearSearch(resetInput) {
+  if (resetInput) document.getElementById("nlSearch").value = "";
+  document.getElementById("searchStatus").classList.remove("visible");
+  document.getElementById("searchStatusText").textContent = "";
+  const first = document.querySelector(".filter-btn");
+  if (first) { first.classList.add("active"); renderCards("all"); }
+}
 
 // ── Modal ──────────────────────────────────────────────────────────────────
 

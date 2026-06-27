@@ -22,6 +22,21 @@
     </div>
   </header>
 
+  <!-- NATURAL LANGUAGE SEARCH -->
+  <section class="search-section">
+    <div class="container">
+      <div class="search-box">
+        <input type="text" id="nlSearch" class="search-input"
+          placeholder='Try "salsa dancing with my partner" or "easy waterpark for kids"…' />
+        <button class="search-btn" id="searchBtn">Find for me</button>
+      </div>
+      <div id="searchStatus" class="search-status">
+        <span id="searchStatusText"></span>
+        <button class="search-clear" id="searchClear">Clear &times;</button>
+      </div>
+    </div>
+  </section>
+
   <!-- FILTERS -->
   <section class="filters-section">
     <div class="container">
@@ -150,6 +165,7 @@
   <script src="src/js/analytics.js"></script>
   <script src="src/js/db.js"></script>
   <script src="src/js/recommendations.js"></script>
+  <script src="src/js/search.js"></script>
   <script src="src/js/app.js"></script>
 </body>
 </html>
