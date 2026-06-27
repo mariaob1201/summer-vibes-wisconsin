@@ -1,3 +1,2 @@
 [build]
-  command = "echo \"const SUPABASE_URL='$SUPABASE_URL';const SUPABASE_ANON='$SUPABASE_ANON';\" > src/js/config.js"
   publish = "."

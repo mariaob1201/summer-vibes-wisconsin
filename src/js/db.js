@@ -1,75 +1,54 @@
-const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+// @ts-nocheck
+// Ratings and comments are stored locally in the browser via localStorage.
 
-async function getRatingSummary(destinationId) {
-  const { data, error } = await db
-    .from("ratings")
-    .select("stars")
-    .eq("destination_id", destinationId);
-
-  if (error || !data.length) return { avg: 0, count: 0 };
-
-  const avg = data.reduce((s, r) => s + r.stars, 0) / data.length;
-  return { avg: Math.round(avg * 10) / 10, count: data.length };
+function _get(key, fallback) {
+  try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
+  catch { return fallback; }
 }
 
-async function submitRating(destinationId, stars) {
-  const { error } = await db
-    .from("ratings")
-    .insert({ destination_id: destinationId, stars });
-
-  if (error) throw error;
+function _set(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
 }
 
-async function getComments(destinationId) {
-  const { data, error } = await db
-    .from("comments")
-    .select("id, nickname, body, created_at")
-    .eq("destination_id", destinationId)
-    .order("created_at", { ascending: false })
-    .limit(50);
-
-  if (error) throw error;
-  return data;
+function getRatingSummary(destinationId) {
+  const ratings = _get(`ratings_${destinationId}`, []);
+  if (!ratings.length) return { avg: 0, count: 0 };
+  const avg = ratings.reduce((s, r) => s + r, 0) / ratings.length;
+  return { avg: Math.round(avg * 10) / 10, count: ratings.length };
 }
 
-async function getAllRatingSummaries() {
-  const { data, error } = await db.from("ratings").select("destination_id, stars");
-  if (error || !data) return {};
+function submitRating(destinationId, stars) {
+  const ratings = _get(`ratings_${destinationId}`, []);
+  ratings.push(stars);
+  _set(`ratings_${destinationId}`, ratings);
+}
 
-  const grouped = {};
-  for (const row of data) {
-    if (!grouped[row.destination_id]) grouped[row.destination_id] = [];
-    grouped[row.destination_id].push(row.stars);
-  }
+function getComments(destinationId) {
+  return _get(`comments_${destinationId}`, []);
+}
 
+function submitComment(destinationId, nickname, body) {
+  const comments = _get(`comments_${destinationId}`, []);
+  comments.unshift({
+    nickname:   nickname.trim() || "Anonymous",
+    body:       body.trim(),
+    created_at: new Date().toISOString()
+  });
+  _set(`comments_${destinationId}`, comments);
+}
+
+function getAllRatingSummaries() {
   const result = {};
-  for (const [id, stars] of Object.entries(grouped)) {
-    const avg = stars.reduce((s, v) => s + v, 0) / stars.length;
-    result[Number(id)] = { avg: Math.round(avg * 10) / 10, count: stars.length };
+  for (const dest of destinations) {
+    const summary = getRatingSummary(dest.id);
+    if (summary.count > 0) result[dest.id] = summary;
   }
   return result;
 }
 
-async function getRatingDistribution(destinationId) {
-  const { data, error } = await db
-    .from("ratings")
-    .select("stars")
-    .eq("destination_id", destinationId);
-
-  if (error || !data) return {};
+function getRatingDistribution(destinationId) {
+  const ratings = _get(`ratings_${destinationId}`, []);
   const dist = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-  for (const r of data) dist[r.stars] = (dist[r.stars] || 0) + 1;
+  for (const r of ratings) dist[r] = (dist[r] || 0) + 1;
   return dist;
-}
-
-async function submitComment(destinationId, nickname, body) {
-  const { error } = await db
-    .from("comments")
-    .insert({
-      destination_id: destinationId,
-      nickname: nickname.trim() || "Anonymous",
-      body: body.trim()
-    });
-
-  if (error) throw error;
 }
