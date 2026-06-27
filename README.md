@@ -1,105 +1,102 @@
 # Summer Vibes Wisconsin
 
-A static travel guide website for Wisconsin lake destinations, with activity filters, community ratings, and comments powered by Supabase.
+A static travel guide for Wisconsin summer activities — lakes, waterparks, dancing, and friends trips. No backend or setup required; open `index.html` and go.
 
 ## Features
 
-- Browse 8 Wisconsin lake destinations (Lake Geneva, Devil's Lake, Apostle Islands, and more)
-- Filter by activity: Boat / Lancha, Family, Hiking, Fishing
-- Anonymous star ratings (stored per browser via localStorage to prevent duplicates)
-- Community comments — post and read traveler experiences
-- Trip planning tips section
+- **21 destinations** across 4 categories: Lake & Outdoor, Kids & Pools, Dancing, Friends Trip
+- Filter by category, sort by rating / activity count / difficulty
+- Content-based recommendation engine (Jaccard tag similarity + difficulty proximity + community rating)
+- Star ratings and comments stored locally in the browser (localStorage — no account needed)
+- Rating distribution histogram per destination
+- Data insights section: activity frequency chart and summary stats
 - Fully responsive design
+
+## Categories
+
+| Category | What's included |
+|---|---|
+| 🌊 Lake & Outdoor | Lakes, hiking, boating, fishing across Wisconsin |
+| 🏊 Kids & Pools | Wisconsin Dells waterparks (Noah's Ark, Kalahari, Mt. Olympus, Wilderness Resort) |
+| 💃 Dancing | Latin/salsa, cumbia, swing, country line dancing, polka |
+| 🎉 Friends Trip | Summerfest, Door County, Madison State Street, Milwaukee Third Ward |
 
 ## Tech Stack
 
-- Plain HTML / CSS / JavaScript — no build step required
-- [Supabase](https://supabase.com) for ratings and comments database
+- Plain HTML / CSS / JavaScript — no build step, no dependencies, no backend
+- Ratings and comments stored in **localStorage** (per browser)
+- Deployed via [Netlify](https://netlify.com)
 
 ## Project Structure
 
 ```
-├── index.html   # Page layout and modal markup
-├── styles.css   # All styles including modal and card components
-├── data.js      # Destination data (name, tags, highlights, etc.)
-├── db.js        # Supabase database functions
-├── app.js       # UI logic, filters, modal, star picker
-└── config.js    # Supabase credentials (fill in before deploying)
+├── index.html              # Page layout and modal markup
+├── netlify.toml            # Netlify publish config
+└── src/
+    ├── css/
+    │   └── styles.css      # All styles
+    └── js/
+        ├── data.js         # All destination data
+        ├── analytics.js    # Stats, frequency chart, sort logic
+        ├── db.js           # localStorage ratings & comments
+        ├── recommendations.js  # Scoring algorithm
+        └── app.js          # UI logic, filters, modal, star picker
 ```
 
-## Setup
+## Run Locally
 
-### 1. Create a Supabase project
-
-Go to [supabase.com](https://supabase.com), create a free project, then run this SQL in the **SQL Editor**:
-
-```sql
-create table ratings (
-  id             uuid primary key default gen_random_uuid(),
-  destination_id integer not null,
-  stars          integer not null check (stars between 1 and 5),
-  created_at     timestamptz default now()
-);
-
-create table comments (
-  id             uuid primary key default gen_random_uuid(),
-  destination_id integer not null,
-  nickname       text default 'Anonymous',
-  body           text not null,
-  created_at     timestamptz default now()
-);
-
-alter table ratings enable row level security;
-alter table comments enable row level security;
-
-create policy "Public read ratings"  on ratings  for select using (true);
-create policy "Public insert ratings" on ratings  for insert with check (true);
-create policy "Public read comments" on comments for select using (true);
-create policy "Public insert comments" on comments for insert with check (true);
+```bash
+python3 -m http.server 3000
 ```
 
-### 2. Add your credentials
+Then open [http://localhost:3000](http://localhost:3000). No credentials or setup needed.
 
-Open `config.js` and replace the placeholder values:
+## Deploy to Netlify
 
-```js
-const SUPABASE_URL  = "https://your-project.supabase.co";
-const SUPABASE_ANON = "your-anon-public-key";
-```
-
-Find both values in: **Supabase Dashboard → Project Settings → API**
-
-### 3. Run locally
-
-Open `index.html` directly in a browser — no server needed.
-
-### 4. Deploy to Netlify
-
-**Option A — Drag & drop:**  
+**Option A — Drag & drop:**
 Go to [netlify.com](https://netlify.com) → Add new site → Deploy manually → drag the project folder.
 
-**Option B — GitHub auto-deploy:**  
-Push to GitHub, connect the repo in Netlify, leave build command and publish directory blank, deploy.
+**Option B — GitHub auto-deploy:**
+Push to GitHub, connect the repo in Netlify, leave build command blank, set publish directory to `.`, deploy.
 
-## Adding Destinations
+## Adding a Destination
 
-Add an object to the `destinations` array in `data.js`:
+Add an object to the `destinations` array in `src/js/data.js`:
 
 ```js
 {
-  id: 9,                          // must be unique
-  name: "Your Lake Name",
+  id: 22,                             // must be unique
+  category: "outdoor",               // outdoor | kids | dancing | friends
+  name: "Your Place",
   region: "Region, WI",
-  tags: ["boat", "family"],       // boat | family | hiking | fishing
-  description: "Short description...",
-  highlights: ["Highlight one", "Highlight two"],
+  tags: ["boat", "family"],          // see tag list below
+  description: "Short description.",
   difficulty: "Easy",
   bestFor: "Families, couples",
-  image: "https://...",
+  image: "https://images.unsplash.com/...",
   mapLink: "https://maps.google.com/?q=...",
-  rating: 4.5                     // initial display rating
+  rating: 4.5
 }
 ```
+
+**Available tags by category:**
+
+| Category | Tags |
+|---|---|
+| Outdoor | `boat` `hiking` `fishing` `family` |
+| Kids | `kids` `pool` `family` |
+| Dancing | `latin` `swing` `country` `cultural` `partners` `friends` |
+| Friends | `friends` `music` `nightlife` `family` |
+
+## Recommendation Algorithm
+
+Each destination is scored against others using three weighted factors:
+
+| Factor | Weight | Method |
+|---|---|---|
+| Tag overlap | 55% | Jaccard similarity |
+| Community rating | 25% | Normalized 1–5 score |
+| Difficulty match | 20% | Normalized distance on 1–3 scale |
 
 ## License
 
