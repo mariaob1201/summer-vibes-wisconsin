@@ -1,9 +1,25 @@
 // @ts-nocheck
 const tagLabels = {
-  boat:    "&#9875; Boat",
-  family:  "&#128106; Family",
-  hiking:  "&#127965; Hiking",
-  fishing: "&#127907; Fishing"
+  // Outdoor
+  boat:     "&#9875; Boat",
+  family:   "&#128106; Family",
+  hiking:   "&#127965; Hiking",
+  fishing:  "&#127907; Fishing",
+  // Kids
+  kids:     "&#127946; Kids",
+  pool:     "&#128166; Pool",
+  // Dancing — Latin American
+  latin:    "&#128131; Latin",
+  // Dancing — other cultures
+  swing:    "&#127927; Swing",
+  country:  "&#129312; Country",
+  cultural: "&#127981; Cultural",
+  // Friends / Nightlife
+  music:    "&#127925; Music",
+  friends:  "&#127881; Friends",
+  nightlife:"&#127762; Nightlife",
+  // Cross-category
+  partners: "&#128107; Partners",
 };
 
 // ── Card rendering ─────────────────────────────────────────────────────────
@@ -48,7 +64,7 @@ function renderCards(filter) {
   const grid    = document.getElementById("cardsGrid");
   const matched = filter === "all"
     ? destinations
-    : destinations.filter(d => d.tags.includes(filter));
+    : destinations.filter(d => d.category === filter);
 
   const filtered = sortDestinations(matched);
 

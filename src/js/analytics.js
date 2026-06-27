@@ -8,7 +8,12 @@ const DIFFICULTY_MAP = {
   "Hard":             3
 };
 
-const TAG_LABELS_FULL = { boat: "Boating", family: "Family", hiking: "Hiking", fishing: "Fishing" };
+const TAG_LABELS_FULL = {
+  boat: "Boating", family: "Family", hiking: "Hiking", fishing: "Fishing",
+  kids: "Kids", pool: "Pool",
+  latin: "Latin", swing: "Swing", country: "Country", cultural: "Cultural",
+  music: "Music", friends: "Friends", nightlife: "Nightlife", partners: "Partners"
+};
 
 function computeTagFrequency() {
   const freq = {};

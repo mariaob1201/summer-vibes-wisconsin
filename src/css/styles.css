@@ -192,10 +192,25 @@ a { color: var(--blue); text-decoration: none; }
   letter-spacing: .04em;
 }
 
-.tag-boat    { background: #dbeafe; color: #1d4ed8; }
-.tag-family  { background: #fef3c7; color: #92400e; }
-.tag-hiking  { background: #dcfce7; color: #15803d; }
-.tag-fishing { background: #ede9fe; color: #6d28d9; }
+/* Outdoor */
+.tag-boat     { background: #dbeafe; color: #1d4ed8; }
+.tag-family   { background: #fef3c7; color: #92400e; }
+.tag-hiking   { background: #dcfce7; color: #15803d; }
+.tag-fishing  { background: #ede9fe; color: #6d28d9; }
+/* Kids */
+.tag-kids     { background: #e0f2fe; color: #0369a1; }
+.tag-pool     { background: #cffafe; color: #155e75; }
+/* Dancing — Latin */
+.tag-latin    { background: #fce7f3; color: #9d174d; }
+/* Dancing — other */
+.tag-swing    { background: #fef9c3; color: #713f12; }
+.tag-country  { background: #fef3c7; color: #78350f; }
+.tag-cultural { background: #ffe4e6; color: #9f1239; }
+.tag-partners { background: #fdf4ff; color: #7e22ce; }
+/* Friends / Nightlife */
+.tag-music    { background: #f3e8ff; color: #6b21a8; }
+.tag-friends  { background: #fff7ed; color: #9a3412; }
+.tag-nightlife{ background: #1e1b4b; color: #a5b4fc; }
 
 .card-title {
   font-size: 1.25rem;
@@ -774,10 +789,20 @@ a { color: var(--blue); text-decoration: none; }
   transition: width .7s ease;
 }
 
-.freq-bar-boat    { background: linear-gradient(90deg, #3b82f6, #1d4ed8); }
-.freq-bar-family  { background: linear-gradient(90deg, #f59e0b, #d97706); }
-.freq-bar-hiking  { background: linear-gradient(90deg, #22c55e, #15803d); }
-.freq-bar-fishing { background: linear-gradient(90deg, #a78bfa, #7c3aed); }
+.freq-bar-boat     { background: linear-gradient(90deg, #3b82f6, #1d4ed8); }
+.freq-bar-family   { background: linear-gradient(90deg, #f59e0b, #d97706); }
+.freq-bar-hiking   { background: linear-gradient(90deg, #22c55e, #15803d); }
+.freq-bar-fishing  { background: linear-gradient(90deg, #a78bfa, #7c3aed); }
+.freq-bar-kids     { background: linear-gradient(90deg, #38bdf8, #0369a1); }
+.freq-bar-pool     { background: linear-gradient(90deg, #22d3ee, #155e75); }
+.freq-bar-latin    { background: linear-gradient(90deg, #f472b6, #9d174d); }
+.freq-bar-swing    { background: linear-gradient(90deg, #fde047, #713f12); }
+.freq-bar-country  { background: linear-gradient(90deg, #fb923c, #78350f); }
+.freq-bar-cultural { background: linear-gradient(90deg, #fb7185, #9f1239); }
+.freq-bar-partners { background: linear-gradient(90deg, #d946ef, #7e22ce); }
+.freq-bar-music    { background: linear-gradient(90deg, #c084fc, #6b21a8); }
+.freq-bar-friends  { background: linear-gradient(90deg, #fb923c, #9a3412); }
+.freq-bar-nightlife{ background: linear-gradient(90deg, #818cf8, #1e1b4b); }
 
 .freq-count {
   font-size: .8rem;
