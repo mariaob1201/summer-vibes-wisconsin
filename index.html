@@ -12,14 +12,8 @@
   <header class="hero">
     <div class="hero-content">
       <span class="hero-badge">Summer 2026</span>
-      <h1>Summer Vibes<br /><span class="accent">Wisconsin</span></h1>
-      <p>Lakes, trails, boats & memories — your ultimate Wisconsin summer trip guide</p>
-      <div class="hero-tags">
-        <span>&#9875; Boating</span>
-        <span>&#128106; Family</span>
-        <span>&#127965; Hiking</span>
-        <span>&#127907; Fishing</span>
-      </div>
+      <h1>Summer Vibes <span class="accent">Wisconsin</span></h1>
+      <p>Your Wisconsin summer trip guide — lakes, trails, boats & more</p>
     </div>
     <div class="hero-wave">
       <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg">
@@ -31,8 +25,6 @@
   <!-- FILTERS -->
   <section class="filters-section">
     <div class="container">
-      <h2>Find Your Perfect Trip</h2>
-      <p class="subtitle">Filter destinations by activity</p>
       <div class="filters" id="filters">
         <button class="filter-btn active" data-filter="all">All Destinations</button>
         <button class="filter-btn" data-filter="boat">&#9875; Boat / Lancha</button>
@@ -63,25 +55,12 @@
   <!-- DATA INSIGHTS -->
   <section class="insights-section">
     <div class="container">
-      <h2>Destination Insights</h2>
-      <p class="subtitle">Data-driven breakdown of Wisconsin's top summer spots</p>
-      <div class="stat-cards">
-        <div class="stat-card">
-          <div class="stat-value" id="statDestinations">—</div>
-          <div class="stat-label">Destinations</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="statAvgRating">—</div>
-          <div class="stat-label">Avg. Seed Rating</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="statTopActivity">—</div>
-          <div class="stat-label">Most Popular Activity</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="statTagDensity">—</div>
-          <div class="stat-label">Avg. Tags / Destination</div>
-        </div>
+      <h2>Insights</h2>
+      <div class="stat-strip">
+        <span><strong id="statDestinations">—</strong> destinations</span>
+        <span>&#9733; <strong id="statAvgRating">—</strong> avg rating</span>
+        <span>Top activity: <strong id="statTopActivity">—</strong></span>
+        <span><strong id="statTagDensity">—</strong> avg tags / dest</span>
       </div>
       <div class="freq-chart">
         <h3 class="freq-chart-title">Activity Distribution</h3>
@@ -93,40 +72,15 @@
   <!-- TRIP TIPS -->
   <section class="tips-section">
     <div class="container">
-      <h2>Trip Planning Tips</h2>
-      <p class="subtitle">Make the most of your Wisconsin summer</p>
-      <div class="tips-grid">
-        <div class="tip-card">
-          <div class="tip-icon">&#128337;</div>
-          <h3>Best Time to Visit</h3>
-          <p>Late June through August is peak season. July offers warmest lake temps (70°F+). Book accommodations 4–6 weeks ahead.</p>
-        </div>
-        <div class="tip-card">
-          <div class="tip-icon">&#9875;</div>
-          <h3>Renting a Boat (Lancha)</h3>
-          <p>Most marinas rent pontoons, kayaks, and motorboats by the hour or day. Bring a valid ID and expect to pay $80–$200/day for pontoons.</p>
-        </div>
-        <div class="tip-card">
-          <div class="tip-icon">&#128106;</div>
-          <h3>Going with Family</h3>
-          <p>Pack sunscreen, life jackets for kids, and snacks. Many state parks have picnic areas with grills. Check if the beach has lifeguards.</p>
-        </div>
-        <div class="tip-card">
-          <div class="tip-icon">&#127965;</div>
-          <h3>Hiking Essentials</h3>
-          <p>Wear layers — mornings near lakes can be cool. Bring bug spray (mosquitoes are real in WI). Download offline trail maps via AllTrails.</p>
-        </div>
-        <div class="tip-card">
-          <div class="tip-icon">&#127907;</div>
-          <h3>Fishing License</h3>
-          <p>Wisconsin requires a fishing license for ages 16+. Buy online at wildlifelicense.com/wi — a 1-day license is about $10 for non-residents.</p>
-        </div>
-        <div class="tip-card">
-          <div class="tip-icon">&#127775;</div>
-          <h3>Hidden Gem Tip</h3>
-          <p>Avoid the busiest spots on holiday weekends. Visit Tuesday–Thursday for quieter beaches, easier boat rentals, and better parking.</p>
-        </div>
-      </div>
+      <h2>Quick Tips</h2>
+      <ul class="tips-list">
+        <li>&#128337; <strong>Best time:</strong> Late June–August; July has warmest lake temps (70°F+). Book 4–6 weeks ahead.</li>
+        <li>&#9875; <strong>Renting a boat:</strong> Bring a valid ID; pontoons run $80–$200/day at most marinas.</li>
+        <li>&#128106; <strong>With kids:</strong> Pack sunscreen, life jackets, and check if beaches have lifeguards.</li>
+        <li>&#127965; <strong>Hiking:</strong> Wear layers, bring bug spray, and download AllTrails offline maps.</li>
+        <li>&#127907; <strong>Fishing license:</strong> Required for ages 16+; 1-day non-resident ~$10 at wildlifelicense.com/wi.</li>
+        <li>&#127775; <strong>Hidden gem:</strong> Visit Tue–Thu for quieter beaches and easier boat rentals.</li>
+      </ul>
     </div>
   </section>
 

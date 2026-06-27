@@ -13,10 +13,6 @@ function createCard(dest) {
     .map(t => `<span class="tag tag-${t}">${tagLabels[t]}</span>`)
     .join("");
 
-  const highlightsHTML = dest.highlights
-    .map(h => `<li>${h}</li>`)
-    .join("");
-
   const filledStars = Math.round(dest.rating);
   const starsHTML = Array.from({ length: 5 }, (_, i) =>
     `<span style="color:${i < filledStars ? "#f59e0b" : "#cbd5e1"}">&#9733;</span>`
@@ -35,11 +31,6 @@ function createCard(dest) {
           <span class="rating-num">${dest.rating}</span>
         </div>
         <p class="card-desc">${dest.description}</p>
-        <ul class="card-highlights">${highlightsHTML}</ul>
-        <div class="card-meta">
-          <span class="meta-item"><strong>Difficulty:</strong> ${dest.difficulty}</span>
-          <span class="meta-item"><strong>Best for:</strong> ${dest.bestFor}</span>
-        </div>
         <div class="card-actions">
           <a class="card-link" href="${dest.mapLink}" target="_blank" rel="noopener">
             View on Map &#8599;
