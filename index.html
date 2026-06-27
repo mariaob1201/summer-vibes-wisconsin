@@ -10,10 +10,11 @@
 
   <!-- HERO -->
   <header class="hero">
+    <button id="langToggle" class="lang-toggle">ES</button>
     <div class="hero-content">
       <span class="hero-badge">Summer 2026</span>
       <h1>Summer Vibes <span class="accent">Wisconsin</span></h1>
-      <p>Your Wisconsin summer trip guide — lakes, trails, boats & more</p>
+      <p>Your Wisconsin summer trip guide — lakes, trails, boats &amp; more</p>
     </div>
     <div class="hero-wave">
       <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg">
@@ -46,6 +47,7 @@
         <button class="filter-btn" data-filter="kids">&#127946; Kids &amp; Pools</button>
         <button class="filter-btn" data-filter="dancing">&#128131; Dancing</button>
         <button class="filter-btn" data-filter="friends">&#127881; Friends Trip</button>
+        <button class="filter-btn filter-btn--first" data-filter="firstTimer">&#127775; First Timers</button>
       </div>
       <div class="sort-row">
         <label class="sort-label" for="sortSelect">Sort by</label>
@@ -93,10 +95,10 @@
     <div class="container">
       <h2>Insights</h2>
       <div class="stat-strip">
-        <span><strong id="statDestinations">—</strong> destinations</span>
-        <span>&#9733; <strong id="statAvgRating">—</strong> avg rating</span>
-        <span>Top activity: <strong id="statTopActivity">—</strong></span>
-        <span><strong id="statTagDensity">—</strong> avg tags / dest</span>
+        <span><strong id="statDestinations">—</strong> <span id="statDestsLabel">destinations</span></span>
+        <span>&#9733; <strong id="statAvgRating">—</strong> <span id="statAvgLabel">avg rating</span></span>
+        <span><span id="statTopLabel">Top activity:</span> <strong id="statTopActivity">—</strong></span>
+        <span><strong id="statTagDensity">—</strong> <span id="statTagsLabel">avg tags / dest</span></span>
       </div>
       <div class="freq-chart">
         <h3 class="freq-chart-title">Activity Distribution</h3>
@@ -109,7 +111,7 @@
   <section class="tips-section">
     <div class="container">
       <h2>Quick Tips</h2>
-      <ul class="tips-list">
+      <ul class="tips-list" id="tipsList">
         <li>&#128337; <strong>Best time:</strong> Late June–August; July has warmest lake temps (70°F+). Book 4–6 weeks ahead.</li>
         <li>&#9875; <strong>Renting a boat:</strong> Bring a valid ID; pontoons run $80–$200/day at most marinas.</li>
         <li>&#128106; <strong>With kids:</strong> Pack sunscreen, life jackets, and check if beaches have lifeguards.</li>
@@ -123,10 +125,19 @@
   <!-- FOOTER -->
   <footer class="footer">
     <div class="container">
-      <p>Summer Vibes Wisconsin &mdash; Trip Guide 2026</p>
+      <p id="footerMain">Summer Vibes Wisconsin &mdash; Trip Guide 2026</p>
       <p class="footer-sub">Always check state park websites for current hours and reservation requirements before you go.</p>
     </div>
   </footer>
+
+  <!-- PRINT PANEL (hidden, shown only via @media print) -->
+  <div id="printPanel" class="print-panel"></div>
+
+  <!-- SAVE BAR (fixed bottom) -->
+  <div id="saveBar" class="save-bar hidden">
+    <span id="saveCount">0 saved to my trip</span>
+    <button id="printBtn" class="print-btn">&#128424;&#65039; Print itinerary</button>
+  </div>
 
   <!-- RATING & COMMENTS MODAL -->
   <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -137,13 +148,13 @@
 
       <!-- Recommendations -->
       <div class="modal-section" id="recoSection">
-        <h3 class="modal-section-title">You Might Also Like</h3>
+        <h3 class="modal-section-title" id="recoSectionTitle">You Might Also Like</h3>
         <div class="reco-list" id="recoList"></div>
       </div>
 
       <!-- Community Rating -->
       <div class="modal-section">
-        <h3 class="modal-section-title">Community Rating</h3>
+        <h3 class="modal-section-title" id="communityRatingTitle">Community Rating</h3>
         <div class="community-rating">
           <span class="community-stars" id="communityStars"></span>
           <span class="community-avg" id="communityAvg"></span>
@@ -151,7 +162,7 @@
         </div>
         <div class="rating-dist" id="ratingDistribution"></div>
 
-        <h3 class="modal-section-title" style="margin-top:20px">Rate This Place</h3>
+        <h3 class="modal-section-title" id="rateThisTitle" style="margin-top:20px">Rate This Place</h3>
         <div class="star-picker" id="starPicker" role="group" aria-label="Rate this destination">
           <span class="star-pick" data-v="1">&#9733;</span>
           <span class="star-pick" data-v="2">&#9733;</span>
@@ -164,7 +175,7 @@
 
       <!-- Comments -->
       <div class="modal-section">
-        <h3 class="modal-section-title">Leave a Comment</h3>
+        <h3 class="modal-section-title" id="leaveCommentTitle">Leave a Comment</h3>
         <form class="comment-form" id="commentForm">
           <input class="comment-input" id="commentName" type="text" placeholder="Your name (optional)" maxlength="40" />
           <textarea class="comment-textarea" id="commentBody" placeholder="Share your experience at this place..." rows="3" maxlength="500" required></textarea>
@@ -174,7 +185,7 @@
 
       <!-- Comments list -->
       <div class="modal-section">
-        <h3 class="modal-section-title">What Travelers Say</h3>
+        <h3 class="modal-section-title" id="whatTravelersSayTitle">What Travelers Say</h3>
         <div class="comments-list" id="commentsList">
           <p class="comments-loading">Loading comments...</p>
         </div>
@@ -183,6 +194,7 @@
   </div>
 
   <script src="src/js/data.js"></script>
+  <script src="src/js/strings.js"></script>
   <script src="src/js/analytics.js"></script>
   <script src="src/js/db.js"></script>
   <script src="src/js/recommendations.js"></script>

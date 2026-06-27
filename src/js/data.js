@@ -13,7 +13,8 @@ const destinations = [
     bestFor: "Couples, families, first-timers",
     image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80",
     mapLink: "https://maps.google.com/?q=Lake+Geneva+Wisconsin",
-    rating: 4.9
+    rating: 4.9,
+    firstTimer: true
   },
   {
     id: 2,
@@ -26,7 +27,8 @@ const destinations = [
     bestFor: "Hikers, geology lovers, families with older kids",
     image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
     mapLink: "https://maps.google.com/?q=Devil%27s+Lake+State+Park+Wisconsin",
-    rating: 4.8
+    rating: 4.8,
+    firstTimer: true
   },
   {
     id: 3,
@@ -107,6 +109,20 @@ const destinations = [
     rating: 4.6
   },
 
+  {
+    id: 22,
+    category: "outdoor",
+    name: "Mirror Lake State Park",
+    region: "Wisconsin Dells Area (Baraboo)",
+    tags: ["hiking", "family", "fishing"],
+    description: "A serene glacial lake ringed by sandstone bluffs just minutes from Wisconsin Dells — canoe across mirror-still water, hike shaded trails, and camp under the pines without the Dells crowds.",
+    difficulty: "Easy",
+    bestFor: "Families, campers, couples looking for quiet",
+    image: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80",
+    mapLink: "https://maps.google.com/?q=Mirror+Lake+State+Park+Wisconsin",
+    rating: 4.7
+  },
+
   // ── Kids & Pools ───────────────────────────────────────────────────────────
 
   {
@@ -120,7 +136,8 @@ const destinations = [
     bestFor: "Families with kids, big groups",
     image: "https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=600&q=80",
     mapLink: "https://maps.google.com/?q=Noah%27s+Ark+Waterpark+Wisconsin+Dells",
-    rating: 4.7
+    rating: 4.7,
+    firstTimer: true
   },
   {
     id: 10,
@@ -175,7 +192,8 @@ const destinations = [
     bestFor: "Couples, Latin dance fans, cultural nights out",
     image: "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=600&q=80",
     mapLink: "https://maps.google.com/?q=Cielito+Lindo+Milwaukee",
-    rating: 4.7
+    rating: 4.7,
+    firstTimer: true
   },
   {
     id: 14,
@@ -243,7 +261,8 @@ const destinations = [
     bestFor: "Everyone — best with a group of friends",
     image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=80",
     mapLink: "https://maps.google.com/?q=Summerfest+Milwaukee",
-    rating: 4.8
+    rating: 4.8,
+    firstTimer: true
   },
   {
     id: 19,
