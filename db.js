@@ -50,6 +50,18 @@ async function getAllRatingSummaries() {
   return result;
 }
 
+async function getRatingDistribution(destinationId) {
+  const { data, error } = await db
+    .from("ratings")
+    .select("stars")
+    .eq("destination_id", destinationId);
+
+  if (error || !data) return {};
+  const dist = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+  for (const r of data) dist[r.stars] = (dist[r.stars] || 0) + 1;
+  return dist;
+}
+
 async function submitComment(destinationId, nickname, body) {
   const { error } = await db
     .from("comments")

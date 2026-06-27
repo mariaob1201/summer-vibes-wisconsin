@@ -40,6 +40,16 @@
         <button class="filter-btn" data-filter="hiking">&#127965; Hiking</button>
         <button class="filter-btn" data-filter="fishing">&#127907; Fishing</button>
       </div>
+      <div class="sort-row">
+        <label class="sort-label" for="sortSelect">Sort by</label>
+        <select class="sort-select" id="sortSelect">
+          <option value="default">Default order</option>
+          <option value="rating">Highest rated</option>
+          <option value="activities">Most activities</option>
+          <option value="difficulty-asc">Easiest first</option>
+          <option value="difficulty-desc">Hardest first</option>
+        </select>
+      </div>
     </div>
   </section>
 
@@ -47,6 +57,36 @@
   <section class="destinations-section">
     <div class="container">
       <div class="cards-grid" id="cardsGrid"></div>
+    </div>
+  </section>
+
+  <!-- DATA INSIGHTS -->
+  <section class="insights-section">
+    <div class="container">
+      <h2>Destination Insights</h2>
+      <p class="subtitle">Data-driven breakdown of Wisconsin's top summer spots</p>
+      <div class="stat-cards">
+        <div class="stat-card">
+          <div class="stat-value" id="statDestinations">—</div>
+          <div class="stat-label">Destinations</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="statAvgRating">—</div>
+          <div class="stat-label">Avg. Seed Rating</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="statTopActivity">—</div>
+          <div class="stat-label">Most Popular Activity</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="statTagDensity">—</div>
+          <div class="stat-label">Avg. Tags / Destination</div>
+        </div>
+      </div>
+      <div class="freq-chart">
+        <h3 class="freq-chart-title">Activity Distribution</h3>
+        <div id="tagFreqBars"></div>
+      </div>
     </div>
   </section>
 
@@ -119,6 +159,7 @@
           <span class="community-avg" id="communityAvg"></span>
           <span class="community-count" id="communityCount"></span>
         </div>
+        <div class="rating-dist" id="ratingDistribution"></div>
 
         <h3 class="modal-section-title" style="margin-top:20px">Rate This Place</h3>
         <div class="star-picker" id="starPicker" role="group" aria-label="Rate this destination">
@@ -154,6 +195,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
   <script src="data.js"></script>
+  <script src="analytics.js"></script>
   <script src="db.js"></script>
   <script src="recommendations.js"></script>
   <script src="app.js"></script>

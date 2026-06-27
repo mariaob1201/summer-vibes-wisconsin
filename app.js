@@ -17,6 +17,11 @@ function createCard(dest) {
     .map(h => `<li>${h}</li>`)
     .join("");
 
+  const filledStars = Math.round(dest.rating);
+  const starsHTML = Array.from({ length: 5 }, (_, i) =>
+    `<span style="color:${i < filledStars ? "#f59e0b" : "#cbd5e1"}">&#9733;</span>`
+  ).join("");
+
   return `
     <div class="card" data-tags="${dest.tags.join(",")}">
       <div class="card-img" style="background-image: url('${dest.image}')">
@@ -25,6 +30,10 @@ function createCard(dest) {
       <div class="card-body">
         <div class="card-tags">${tagsHTML}</div>
         <h3 class="card-title">${dest.name}</h3>
+        <div class="card-rating">
+          <span class="stars">${starsHTML}</span>
+          <span class="rating-num">${dest.rating}</span>
+        </div>
         <p class="card-desc">${dest.description}</p>
         <ul class="card-highlights">${highlightsHTML}</ul>
         <div class="card-meta">
@@ -45,10 +54,12 @@ function createCard(dest) {
 }
 
 function renderCards(filter) {
-  const grid = document.getElementById("cardsGrid");
-  const filtered = filter === "all"
+  const grid    = document.getElementById("cardsGrid");
+  const matched = filter === "all"
     ? destinations
     : destinations.filter(d => d.tags.includes(filter));
+
+  const filtered = sortDestinations(matched);
 
   if (!filtered.length) {
     grid.innerHTML = `<p class="no-results">No destinations found for this filter.</p>`;
@@ -57,7 +68,7 @@ function renderCards(filter) {
   grid.innerHTML = filtered.map(createCard).join("");
 }
 
-// ── Filters ────────────────────────────────────────────────────────────────
+// ── Filters & Sort ─────────────────────────────────────────────────────────
 
 document.getElementById("filters").addEventListener("click", (e) => {
   const btn = e.target.closest(".filter-btn");
@@ -65,6 +76,11 @@ document.getElementById("filters").addEventListener("click", (e) => {
   document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
   renderCards(btn.dataset.filter);
+});
+
+document.getElementById("sortSelect").addEventListener("change", () => {
+  const active = document.querySelector(".filter-btn.active");
+  renderCards(active ? active.dataset.filter : "all");
 });
 
 // ── Modal ──────────────────────────────────────────────────────────────────
@@ -90,6 +106,7 @@ function openModal(destId) {
 
   renderRecommendations(destId);
   loadRatingSummary(destId);
+  renderRatingDistribution(destId);
   loadComments(destId);
 }
 
@@ -139,7 +156,7 @@ starPicker.addEventListener("click", async (e) => {
   const star = e.target.closest(".star-pick");
   if (!star || !activeDestId) return;
 
-  const value = parseInt(star.dataset.v);
+  const value    = parseInt(star.dataset.v);
   const feedback = document.getElementById("ratingFeedback");
 
   try {
@@ -147,11 +164,12 @@ starPicker.addEventListener("click", async (e) => {
     localStorage.setItem(`rated_${activeDestId}`, value);
     resetStarPicker(value, true);
     feedback.textContent = "Thanks for your rating!";
-    feedback.className = "rating-feedback success";
+    feedback.className   = "rating-feedback success";
     loadRatingSummary(activeDestId);
+    renderRatingDistribution(activeDestId);
   } catch {
     feedback.textContent = "Could not save rating. Try again.";
-    feedback.className = "rating-feedback error";
+    feedback.className   = "rating-feedback error";
   }
 });
 
@@ -165,9 +183,9 @@ async function loadRatingSummary(destId) {
   const countEl = document.getElementById("communityCount");
 
   if (count === 0) {
-    starsEl.innerHTML = "&#9733;&#9733;&#9733;&#9733;&#9733;";
+    starsEl.innerHTML   = "&#9733;&#9733;&#9733;&#9733;&#9733;";
     starsEl.style.color = "#cbd5e1";
-    avgEl.textContent  = "";
+    avgEl.textContent   = "";
     countEl.textContent = "No ratings yet — be the first!";
     return;
   }
@@ -176,8 +194,34 @@ async function loadRatingSummary(destId) {
   starsEl.innerHTML = Array.from({ length: 5 }, (_, i) =>
     `<span style="color:${i < full ? "#f59e0b" : "#cbd5e1"}">&#9733;</span>`
   ).join("");
-  avgEl.textContent  = `${avg} / 5`;
+  avgEl.textContent   = `${avg} / 5`;
   countEl.textContent = `(${count} rating${count !== 1 ? "s" : ""})`;
+}
+
+// ── Rating distribution histogram ──────────────────────────────────────────
+
+async function renderRatingDistribution(destId) {
+  const el = document.getElementById("ratingDistribution");
+  if (!el) return;
+  try {
+    const dist  = await getRatingDistribution(destId);
+    const total = Object.values(dist).reduce((s, v) => s + v, 0);
+    if (total === 0) { el.innerHTML = ""; return; }
+
+    el.innerHTML = [5, 4, 3, 2, 1].map(star => {
+      const count = dist[star] || 0;
+      const pct   = Math.round((count / total) * 100);
+      return `
+        <div class="dist-row">
+          <span class="dist-star">${star}★</span>
+          <div class="dist-bar-wrap">
+            <div class="dist-bar" style="width:${pct}%"></div>
+          </div>
+          <span class="dist-count">${count}</span>
+        </div>
+      `;
+    }).join("");
+  } catch { /* fail silently */ }
 }
 
 // ── Comments ───────────────────────────────────────────────────────────────
@@ -217,13 +261,13 @@ document.getElementById("commentForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   if (!activeDestId) return;
 
-  const name   = document.getElementById("commentName").value;
-  const body   = document.getElementById("commentBody").value.trim();
-  const btn    = e.target.querySelector(".comment-submit");
+  const name = document.getElementById("commentName").value;
+  const body = document.getElementById("commentBody").value.trim();
+  const btn  = e.target.querySelector(".comment-submit");
 
   if (!body) return;
 
-  btn.disabled = true;
+  btn.disabled    = true;
   btn.textContent = "Posting...";
 
   try {
@@ -233,20 +277,10 @@ document.getElementById("commentForm").addEventListener("submit", async (e) => {
   } catch {
     alert("Could not post comment. Please try again.");
   } finally {
-    btn.disabled = false;
+    btn.disabled    = false;
     btn.textContent = "Post Comment";
   }
 });
-
-// ── Utils ──────────────────────────────────────────────────────────────────
-
-function escapeHTML(str) {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
 
 // ── Recommendations ────────────────────────────────────────────────────────
 
@@ -314,3 +348,4 @@ function escapeHTML(str) {
 
 preloadRatings();
 renderCards("all");
+renderInsights();
