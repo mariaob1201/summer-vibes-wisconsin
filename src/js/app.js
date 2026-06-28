@@ -121,6 +121,7 @@ function applyStrings() {
 function setLang(newLang) {
   lang = newLang;
   localStorage.setItem("wis_lang", lang);
+  gtag?.("event", "language_toggle", { language: newLang });
   applyStrings();
   renderFeatured();
   renderSections(currentFilter);
@@ -173,6 +174,12 @@ function toggleSaved(destId) {
   }
   localStorage.setItem("wis_saved", JSON.stringify([...savedIds]));
   const isSaved = savedIds.has(destId);
+  const dest = destinations.find(d => d.id === destId);
+  gtag?.("event", isSaved ? "save_destination" : "unsave_destination", {
+    destination_id:   destId,
+    destination_name: dest?.name,
+    category:         dest?.category,
+  });
   document.querySelectorAll(`.save-btn[data-id="${destId}"]`).forEach(btn => {
     btn.classList.toggle("saved", isSaved);
     btn.title = isSaved ? t("cardUnsave") : t("cardSave");
@@ -217,6 +224,7 @@ function renderPrintPanel() {
 
 document.getElementById("printBtn").addEventListener("click", () => {
   renderPrintPanel();
+  gtag?.("event", "print_itinerary", { saved_count: savedIds.size });
   window.print();
 });
 
@@ -458,6 +466,7 @@ function runSearch() {
   }
 
   statusText.textContent = `${results.length} match${results.length !== 1 ? "es" : ""} for "${query}"`;
+  gtag?.("event", "search", { search_term: query, results_count: results.length });
   container.innerHTML = `<div class="cards-grid">${sortDestinations(results).map(createCard).join("")}</div>`;
 }
 
@@ -506,7 +515,7 @@ modalClose.addEventListener("click", closeModal);
 overlay.addEventListener("click", (e) => { if (e.target === overlay) closeModal(); });
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
 
-// Body-level delegation: save buttons and review buttons
+// Body-level delegation: save buttons, review buttons, map links
 document.body.addEventListener("click", (e) => {
   const saveBtn = e.target.closest(".save-btn");
   if (saveBtn) {
@@ -514,7 +523,21 @@ document.body.addEventListener("click", (e) => {
     return;
   }
   const reviewBtn = e.target.closest(".card-review-btn");
-  if (reviewBtn && !overlay.contains(reviewBtn)) openModal(parseInt(reviewBtn.dataset.id));
+  if (reviewBtn && !overlay.contains(reviewBtn)) {
+    openModal(parseInt(reviewBtn.dataset.id));
+    return;
+  }
+  const mapLink = e.target.closest(".card-link");
+  if (mapLink) {
+    const card = mapLink.closest("[data-tags]");
+    const btn  = card?.querySelector(".card-review-btn") || card?.querySelector(".save-btn");
+    const id   = btn ? parseInt(btn.dataset.id) : null;
+    const dest = id ? destinations.find(d => d.id === id) : null;
+    gtag?.("event", "view_on_map", {
+      destination_id:   id,
+      destination_name: dest?.name,
+    });
+  }
 });
 
 // ── Star picker ───────────────────────────────────────────────────────────────
@@ -556,6 +579,12 @@ starPicker.addEventListener("click", async (e) => {
     resetStarPicker(value, true);
     feedback.textContent = t("ratingThanks");
     feedback.className   = "rating-feedback success";
+    const ratedDest = destinations.find(d => d.id === activeDestId);
+    gtag?.("event", "rate_destination", {
+      destination_id:   activeDestId,
+      destination_name: ratedDest?.name,
+      rating_value:     value,
+    });
     loadRatingSummary(activeDestId);
     renderRatingDistribution(activeDestId);
   } catch {
